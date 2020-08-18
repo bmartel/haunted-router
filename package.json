@@ -1,6 +1,6 @@
 {
-  "name": "haunted-router",
-  "version": "0.2.0",
+  "name": "@martel/haunted-router",
+  "version": "0.3.0",
   "description": "A client-side router for Haunted",
   "main": "haunted-router.js",
   "module": "haunted-router.js",
@@ -21,6 +21,9 @@
     "web-components"
   ],
   "author": "Enzo Baldisserri",
+  "contributors": [
+    "Brandon Martel <brandon@martel.dev>"
+  ],
   "files": [
     "haunted-router.d.ts",
     "haunted-router.js",
