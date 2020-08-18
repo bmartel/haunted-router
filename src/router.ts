@@ -31,7 +31,7 @@ function update() {
       hookPath.set(hook, match);
     }
 
-    farthestPath = farthestPath.slice(match!.length);
+    if (match) farthestPath = farthestPath.slice(match.length);
   }
 
   // Update the last item of the hook path anyway

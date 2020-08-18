@@ -10,17 +10,16 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '/foo': () => expectedFoo,
           '/bar': () => expectedBar,
         },
-        -1,
+        -1
       );
+      actual = outlet;
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -39,23 +38,61 @@ describe('useRoutes', () => {
     teardown();
   });
 
+  it('Allows name to be set for matching the current route name', async () => {
+    const tag = 'matching-route-name-test';
+    const expectedFoo = 0,
+      expectedBar = 1;
+    let actual;
+
+    function App() {
+      const { match, outlet, exact } = useRoutes(
+        {
+          '/foo': { name: 'foo', entry: () => expectedFoo },
+          '/bar': { name: 'bar', entry: () => expectedBar },
+        },
+        -1
+      );
+      actual = { outlet, match, exact };
+
+      return html` Test `;
+    }
+    customElements.define(tag, component(App));
+
+    navigateTo('/foo');
+
+    const teardown = attach(tag);
+    await cycle();
+
+    assert.strictEqual(actual.outlet, expectedFoo, "The function matching /foo wasn't executed");
+    assert.strictEqual(actual.match, 'foo', "The route name foo wasn't matched");
+    assert.strictEqual(actual.exact, true, "The route name foo wasn't matched exactly");
+
+    replaceTo('/bar');
+    await cycle();
+
+    assert.strictEqual(actual.outlet, expectedBar, "The function matching /bar wasn't executed");
+    assert.strictEqual(actual.match, 'bar', "The route name bar wasn't matched");
+    assert.strictEqual(actual.exact, true, "The route name bar wasn't matched exactly");
+
+    teardown();
+  });
+
   it('Returns the fallback value if no route matches', async () => {
     const tag = 'fallback-route-test';
     const expected = 1;
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '/foo': () => 2,
           '/bar': () => 3,
         },
-        expected,
+        expected
       );
+      actual = outlet;
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -75,11 +112,11 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes({ '/foo*': () => expected }, 2);
+      const { outlet } = useRoutes({ '/foo*': () => expected }, 2);
 
-      return html`
-        Test
-      `;
+      actual = outlet;
+
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -99,11 +136,10 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes({ '*': () => expected }, 2);
+      const { outlet } = useRoutes({ '*': () => expected }, 2);
+      actual = outlet;
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -123,17 +159,16 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '/foo': () => expected,
           '*': () => 1,
         },
-        2,
+        2
       );
+      actual = outlet;
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -150,45 +185,57 @@ describe('useRoutes', () => {
   it('Allows descendants to declare routes', async () => {
     const parentTag = 'parent-routes-test';
     const childTag = 'child-routes-test';
-    const expected = 1;
-    let actual;
+    const expected1 = 1;
+    const expected2 = 2;
+    let parent;
+    let child;
 
     function Parent() {
-      const route = useRoutes(
+      parent = useRoutes(
         {
-          '/foo*': () =>
-            html`
-              <child-routes-test />
-            `,
+          '/foo*': { name: 'foo', entry: () => html` <child-routes-test /> ` },
         },
-        html``,
+        html``
       );
 
-      return route;
+      return parent.outlet;
     }
     customElements.define(parentTag, component(Parent));
 
     function Child() {
-      actual = useRoutes(
+      child = useRoutes(
         {
-          '/bar': () => expected,
+          '': { name: 'foo.index', entry: () => expected1 },
+          '/bar': { name: 'foo.bar', entry: () => expected2 },
           bar: () => 2,
         },
-        10,
+        10
       );
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(childTag, component(Child));
 
-    navigateTo('/foo/bar');
-
+    navigateTo('/foo');
     const teardown = attach(parentTag);
     await cycle();
 
-    assert.equal(actual, expected, 'Child was not rendered');
+    assert.strictEqual(parent.match, 'foo', "The Parent route name foo wasn't matched");
+    assert.strictEqual(parent.exact, false, "The Parent route name foo wasn't matched exactly");
+
+    assert.strictEqual(child.outlet, expected1, 'Child was not rendered');
+    assert.strictEqual(child.match, 'foo.index', "The Child route name foo.index wasn't matched");
+    assert.strictEqual(child.exact, true, "The Child route name foo.index wasn't matched exactly");
+
+    navigateTo('/foo/bar');
+    await cycle();
+
+    assert.strictEqual(parent.match, 'foo', "The Parent route name foo wasn't matched");
+    assert.strictEqual(parent.exact, false, "The Parent route name foo wasn't matched exactly");
+
+    assert.strictEqual(child.outlet, expected2, 'Child was not rendered');
+    assert.strictEqual(child.match, 'foo.bar', "The Child route name foo.bar wasn't matched");
+    assert.strictEqual(child.exact, true, "The Child route name foo.bar wasn't matched exactly");
 
     teardown();
   });
@@ -200,17 +247,16 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '/foo': () => expected1,
           '/bar': () => expected2,
         },
-        3,
+        3
       );
+      actual = outlet;
 
-      return html`
-        Test
-      `;
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -235,16 +281,16 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '/foo/:foo/:baz/baz': params => params,
         },
-        'wrong',
+        'wrong'
       );
 
-      return html`
-        Test
-      `;
+      actual = outlet;
+
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
@@ -264,16 +310,16 @@ describe('useRoutes', () => {
     let actual;
 
     function App() {
-      actual = useRoutes(
+      const { outlet } = useRoutes(
         {
           '*': (_, state) => state,
         },
-        'wrong',
+        'wrong'
       );
 
-      return html`
-        Test
-      `;
+      actual = outlet;
+
+      return html` Test `;
     }
     customElements.define(tag, component(App));
 
