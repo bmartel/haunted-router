@@ -64,7 +64,7 @@ function App() {
 
   return html`
     <main>
-      ${routeResult}
+      ${routeResult.outlet}
     </main>
   `;
 }
@@ -178,7 +178,7 @@ const MyApp = () => {
 
   return html`
     <header>My Awesome App</header>
-    <main>${routeResult}</main>
+    <main>${routeResult.outlet}</main>
     <footer>&copy; Haunted Router</footer>
   `;
 };
@@ -229,7 +229,7 @@ const PageAccount = () => {
 
   return html`
     <h1>Account</h1>
-    ${tabResult}
+    ${tabResult.outlet}
   `;
 };
 

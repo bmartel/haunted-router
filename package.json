@@ -1,10 +1,10 @@
 {
   "name": "@martel/haunted-router",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A client-side router for Haunted",
   "main": "haunted-router.js",
   "module": "haunted-router.js",
-  "typings": "haunted-router.d.ts",
+  "types": "haunted-router.d.ts",
   "scripts": {
     "start": "es-dev-server --port 1991 --node-resolve",
     "build": "make",
@@ -13,36 +13,33 @@
     "test": "mocha-headless-chrome -f http://localhost:1991/test/test.html"
   },
   "peerDependencies": {
-    "haunted": "^4.6.0"
+    "haunted": "^4.8.0"
   },
   "keywords": [
     "router",
     "haunted",
     "web-components"
   ],
-  "author": "Enzo Baldisserri",
-  "contributors": [
-    "Brandon Martel <brandon@martel.dev>"
-  ],
+  "author": "Brandon Martel <brandon@martel.dev>",
   "files": [
     "haunted-router.d.ts",
     "haunted-router.js",
     "lib"
   ],
-  "homepage": "https://github.com/Gladear/haunted-router#readme",
+  "homepage": "https://github.com/bmartel/haunted-router#readme",
   "bugs": {
-    "url": "https://github.com/Gladear/haunted-router/issues"
+    "url": "https://github.com/bmartel/haunted-router/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gladear/haunted-router"
+    "url": "https://github.com/bmartel/haunted-router"
   },
   "license": "MIT",
   "devDependencies": {
-    "conventional-changelog-cli": "^2.0.34",
-    "es-dev-server": "^1.56.1",
-    "haunted": "^4.7.0",
-    "mocha-headless-chrome": "^2.0.3",
-    "typescript": "^3.9.7"
+    "conventional-changelog-cli": "^2.1.1",
+    "es-dev-server": "^2.1.0",
+    "haunted": "^4.8.1",
+    "mocha-headless-chrome": "^3.1.0",
+    "typescript": "^4.3.4"
   }
 }
