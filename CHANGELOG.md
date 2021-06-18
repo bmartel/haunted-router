@@ -1,3 +1,12 @@
+## [0.3.1](https://github.com/bmartel/haunted-router/compare/v0.2.0...v0.3.1) (2021-06-18)
+
+
+### Bug Fixes
+
+* export `useSearchParams` and add tests ([7a8feb2](https://github.com/bmartel/haunted-router/commit/7a8feb2e09f7a0fd5d3b381ab4b8af44986baa78))
+
+
+
 ## [0.2.1](https://github.com/Gladear/haunted-router/compare/v0.2.0...v0.2.1) (2020-12-05)
 
 
